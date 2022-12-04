@@ -17,11 +17,11 @@ var templates *template.Template
 
 type homeData struct {
 	PageTitle string
-	Blocks    []blockchain.Block
+	Blocks    []*blockchain.Block
 }
 
 func home(rw http.ResponseWriter, r *http.Request) {
-	data := homeData{"Home", blockchain.GetBlockchain().AllBlocks()}
+	data := homeData{"Home", nil}
 	templates.ExecuteTemplate(rw, "home", data)
 }
 
@@ -32,7 +32,7 @@ func add(rw http.ResponseWriter, r *http.Request) {
 	case "POST":
 		r.ParseForm()
 		data := r.Form.Get("blockData")
-		blockchain.GetBlockchain().AddBlock(data)
+		blockchain.Blockchain().AddBlock(data)
 		http.Redirect(rw, r, "/", http.StatusPermanentRedirect)
 	}
 }
